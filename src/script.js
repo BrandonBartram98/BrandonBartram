@@ -1,4 +1,4 @@
-import '/dist/output.css'
+import '/dist/main.css'
 import * as THREE from 'three'
 
 // AnimeJS
