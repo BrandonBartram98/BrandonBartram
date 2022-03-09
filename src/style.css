@@ -22,4 +22,43 @@ body
     top: 0;
     left: 0;
     outline: none;
+    z-index: 0;
 }
+
+.nav-item::before {  
+    transform: scaleX(0);
+    transform-origin: bottom right;
+  }
+  
+  .nav-item:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  .nav-item::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    inset: 0 0 0 0;
+    background: #ffd95a;
+    z-index: -1;
+    transition: transform .3s ease;
+  }
+  
+  .nav-item {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .ml6 .text-wrapper {
+    padding-top: 0.2em;
+    padding-right: 0.05em;
+    padding-bottom: 0.1em;
+    overflow: hidden;
+  }
+  
+  .ml6 .letter {
+    display: inline-block;
+    line-height: 1em;
+  }

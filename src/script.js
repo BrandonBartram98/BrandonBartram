@@ -1,6 +1,18 @@
 import '/dist/output.css'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
+// AnimeJS
+var textWrapper = document.querySelector('.ml6 .letters');
+textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+anime.timeline({loop: false})
+  .add({
+    targets: '.ml6 .letter',
+    translateY: ["1.1em", 0],
+    translateZ: 0,
+    duration: 750,
+    delay: (el, i) => 75 * i
+    })
 
 /**
  * Base
@@ -44,10 +56,6 @@ camera.position.y = 1
 camera.position.z = 1
 scene.add(camera)
 
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
 /**
  * Cube
  */
@@ -79,9 +87,6 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - lastElapsedTime
     lastElapsedTime = elapsedTime
-
-    // Update controls
-    controls.update()
 
     // Render
     renderer.render(scene, camera)
