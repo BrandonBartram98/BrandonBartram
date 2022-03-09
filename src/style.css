@@ -16,13 +16,13 @@ body
     font-family: 'Inter', sans-serif;
 }
 
-.gradient-text {
+.gradient-text h2 {
     background: #ffdd1d;
 background: -webkit-linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
 background: -moz-linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
 background: linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
 -webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+-webkit-text-fill-color: rgba(255,255,255,0);
 }
 
 .webgl
