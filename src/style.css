@@ -16,14 +16,6 @@ body
     font-family: 'Inter', sans-serif;
 }
 
-.gradient-text h2 {
-    background: #ffdd1d;
-background: -webkit-linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
-background: -moz-linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
-background: linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: rgba(255,255,255,0);
-}
 
 .webgl
 {
@@ -50,7 +42,7 @@ background: linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
     inset: 0 0 0 0;
-    background: #ffdd1d;
+    background: #ffce1d;
     z-index: -1;
     transition: transform .3s ease;
   }

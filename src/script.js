@@ -1,18 +1,29 @@
 import '/dist/output.css'
 import * as THREE from 'three'
 
-// AnimeJS
-var textWrapper = document.querySelector('.ml6 .letters');
-textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+let darkToggle = false
 
-anime.timeline({loop: false})
-  .add({
-    targets: '.ml6 .letter',
-    translateY: ["1.1em", 0],
-    translateZ: 0,
-    duration: 750,
-    delay: (el, i) => 75 * i
-    })
+const darkToggleButton = document.getElementById("dark-toggle")
+const lightMode = document.getElementById("light-mode")
+const darkMode = document.getElementById("dark-mode")
+darkToggleButton.addEventListener("click", toggleDarkMode)
+
+function toggleDarkMode() {
+    if (darkToggle) {
+        darkToggle = false
+        document.body.classList.remove("dark")
+        lightMode.classList.add("hidden")
+        darkMode.classList.remove("hidden")
+        darkToggleButton.classList.remove("fill-white")
+    }
+    else {
+        darkToggle = true
+        document.body.classList.add("dark")
+        lightMode.classList.remove("hidden")
+        darkMode.classList.add("hidden")
+        darkToggleButton.classList.add("fill-white")
+    }
+}
 
 /**
  * Base
