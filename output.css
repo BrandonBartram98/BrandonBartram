@@ -661,7 +661,7 @@ body
   font-family: 'Inter', sans-serif;
 }
 
-.gradient-text {
+.gradient-text h2 {
   background: #ffdd1d;
   background: linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
   -webkit-background-clip: text;
