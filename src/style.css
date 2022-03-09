@@ -16,6 +16,15 @@ body
     font-family: 'Inter', sans-serif;
 }
 
+.gradient-text {
+    background: #ffdd1d;
+background: -webkit-linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
+background: -moz-linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
+background: linear-gradient(to right, #ffdd1d 0%, #CF1512 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
 .webgl
 {
     position: fixed;
@@ -41,7 +50,7 @@ body
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
     inset: 0 0 0 0;
-    background: #ffd95a;
+    background: #ffdd1d;
     z-index: -1;
     transition: transform .3s ease;
   }
@@ -49,16 +58,4 @@ body
   .nav-item {
     position: relative;
     cursor: pointer;
-  }
-  
-  .ml6 .text-wrapper {
-    padding-top: 0.2em;
-    padding-right: 0.05em;
-    padding-bottom: 0.1em;
-    overflow: hidden;
-  }
-  
-  .ml6 .letter {
-    display: inline-block;
-    line-height: 1em;
   }
