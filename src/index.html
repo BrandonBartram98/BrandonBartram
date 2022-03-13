@@ -8,12 +8,10 @@
     <title>Brandon Bartram</title>
 </head>
 <body class="antialiased tracking-tight">
-<div class="w-full h-full m-0 p-0 bg-white dark:bg-black transition duration-500 ease-out">
-    <!-- ThreeJS Canvas -->
-    <canvas class="webgl hidden"></canvas>
+<div class="w-full h-full m-0 p-0 bg-white text-black dark:bg-black dark:text-white transition duration-500 ease-out">
 
     <!-- Navbar -->
-    <div class="fixed hidden md:block dark:text-white top-0 left-1/2 -translate-x-1/2">
+    <div class="fixed hidden md:block  top-0 left-1/2 -translate-x-1/2 z-50">
         <ul class="flex gap-8 p-4 font-bold">
             <li class="nav-item">Home</li>
             <li class="nav-item">About</li>
@@ -22,18 +20,18 @@
         </ul>
     </div>
 
-    <div id="dark-toggle" class="fixed top-0 right-0 text-2xl pr-6 pt-3 cursor-pointer">
+    <div id="dark-toggle" class="fixed top-0 right-0 text-2xl pr-6 pt-3 cursor-pointer z-50">
         <p id="light-mode" class="hidden">🌻</p>
         <p id="dark-mode">🌚</p>
     </div>
 
     <div class="flex h-screen mx-8 lg:mx-0">
         <div class="grid grid-cols-1 m-auto">
-            <div class="text-4xl md:text-5xl lg:text-6xl pb-2">
-                <h1 class="flex dark:text-white font-extrabold">
+            <div class="text-4xl md:text-5xl lg:text-6xl pb-2 z-50">
+                <h1 class="flex dark:text-white font-extrabold ">
                     Brandon Bartram
                 </h1>
-                <h2 class="text-primary flex font-extrabold z-50">
+                <h2 class="text-primary flex font-extrabold">
                     Creative Developer
                 </h2>
                 <div class="absolute hidden md:block top-1/2 left-[52.5%] -translate-y-1/2">
@@ -115,10 +113,59 @@
                     </div>
                 </div>
             </div>
-            <p class="flex w-3/4 md:w-1/2 text-gray-400 z-20">Junior Developer at We Are Immersive, currently working on cool projects built with various tech like three.js and Unity. This site is still under contruction. 🐝</p>
+            <p class="flex w-4/5 md:w-1/2 text-gray-400 z-20">Junior Developer at We Are Immersive, currently working on cool projects built with various tech like three.js and Unity. This site is still under contruction. 🐝</p>
         </div>
-        <svg class="absolute bottom-4 left-1/2 -translate-x-1/2 dark:fill-white" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" width="30" height="30"><path d="M9.854 8.854l.353-.354-.707-.707-.354.353.708.708zM7.5 10.5l-.354.354.354.353.354-.353L7.5 10.5zM5.854 8.146L5.5 7.793l-.707.707.353.354.708-.708zm3.292 0l-2 2 .708.708 2-2-.708-.708zm-1.292 2l-2-2-.708.708 2 2 .708-.708zM8 10.5V4H7v6.5h1z"></path></svg>
     </div>
+</div>
+
+<!-- ThreeJS Canvas -->
+<canvas class="webgl transition opacity-0"></canvas>
+
+<div class="snap-mandatory snap-y font-extrabold tracking-wide text-4xl bg-white text-black dark:text-white dark:bg-black transition duration-500 ease-out">
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2">
+            <h1>Projects</h1>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2 space-y-2">
+            <h1>Project 1</h1>
+            <p class="text-xl font-light">Project subtext/description of project.</p>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2 space-y-2">
+            <h1>Project 2</h1>
+            <p class="text-xl font-light">Project subtext/description of project.</p>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2 space-y-2">
+            <h1>Project 3</h1>
+            <p class="text-xl font-light">Project subtext/description of project.</p>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2 space-y-2">
+            <h1>Project 4</h1>
+            <p class="text-xl font-light">Project subtext/description of project.</p>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2 space-y-2">
+            <h1>Project 5</h1>
+            <p class="text-xl font-light">Project subtext/description of project.</p>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+        <div class="absolute top-1/2 left-0 ml-12 transform -translate-y-1/2 space-y-2">
+            <h1>Project 6</h1>
+            <p class="text-xl font-light">Project subtext/description of project.</p>
+        </div>
+    </section>
+    <section class="relative h-screen snap-start">
+
+    </section>
 </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
