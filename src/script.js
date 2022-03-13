@@ -79,8 +79,8 @@ camera.position.y = 0
 camera.position.z = 10
 scene.add(camera)
 
-let planeTexture = textureLoader.load('/images/testimage.jpeg')
-let planeTexture2 = textureLoader.load('/images/testimage2.jpeg')
+let planeTexture = textureLoader.load('images/testimage.jpeg')
+let planeTexture2 = textureLoader.load('images/testimage2.jpeg')
 // Material
 const shaderMat = new THREE.ShaderMaterial({
     vertexShader: galleryVertex,
