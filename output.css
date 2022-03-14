@@ -502,6 +502,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   }
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .visible {
   visibility: visible;
 }
@@ -518,20 +522,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: relative;
 }
 
-.top-0 {
-  top: 0px;
+.top-1\/2 {
+  top: 50%;
 }
 
 .left-1\/2 {
   left: 50%;
 }
 
-.right-0 {
-  right: 0px;
+.top-0 {
+  top: 0px;
 }
 
-.top-1\/2 {
-  top: 50%;
+.right-0 {
+  right: 0px;
 }
 
 .left-\[52\.5\%\] {
@@ -544,6 +548,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .z-50 {
   z-index: 50;
+}
+
+.z-40 {
+  z-index: 40;
 }
 
 .z-20 {
@@ -693,6 +701,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-bottom: 0.5rem;
 }
 
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -750,10 +763,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .opacity-10 {
   opacity: 0.1;
-}
-
-.opacity-0 {
-  opacity: 0;
 }
 
 .transition {
