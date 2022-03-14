@@ -4,6 +4,13 @@ import { DoubleSide } from 'three'
 import * as dat from 'lil-gui'
 import galleryFragment from './shaders/galleryfragment.glsl'
 import galleryVertex from './shaders/galleryvertex.glsl'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+
+let avatarModel
+let avatarHead, avatarLeftEye, avatarRightEye, avatarSpine, avatarBreathing
+
+let hasLoaded = false
+const pointer = new THREE.Vector2();
 
 let darkToggle = false
 
@@ -79,8 +86,70 @@ camera.position.y = 0
 camera.position.z = 10
 scene.add(camera)
 
+document.addEventListener( 'mousemove', onMouseMove )
+
+// Cursor
+function onMouseMove(event)
+{
+    event.preventDefault()
+    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
+	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+}
+
+const loadingElement = document.querySelector('.loading-screen')
+const loadingManager = new THREE.LoadingManager(
+    // Loaded
+    () =>
+    {
+        hasLoaded = true
+        // Wait a little
+        window.setTimeout(() =>
+        {
+            loadingElement.style.opacity = 0
+        }, 200)
+    }
+)
+
+// AVATAR
+const gltfLoader = new GLTFLoader(loadingManager)
+gltfLoader.load(
+    'models/avatar.glb', (glb) => 
+    {
+        avatarModel = glb
+        avatarModel.scene.position.set(0.9, -2, 9)
+        avatarModel.scene.traverse(function(child) {
+            if (child.name === "Head") {
+              avatarHead = child
+            }
+            if (child.name === "LeftEye") {
+                avatarLeftEye = child
+            }
+            if (child.name === "RightEye") {
+                avatarRightEye = child
+            }
+            if (child.name === "Spine2") {
+                avatarSpine = child
+            }
+            if (child.name === "Spine1") {
+                avatarSpine = child
+            }
+        })
+        avatarModel.scene.rotation.y = -40 * THREE.Math.DEG2RAD
+        //scene.add(avatarModel.scene)
+    }
+)
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+scene.add(ambientLight)
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+directionalLight.castShadow = true
+directionalLight.position.set(0, 0.5, 0)
+scene.add(directionalLight)
+
+// GALLERY
+
 let planeTexture = textureLoader.load('images/testimage.jpeg')
-let planeTexture2 = textureLoader.load('images/testimage2.jpeg')
 // Material
 const shaderMat = new THREE.ShaderMaterial({
     vertexShader: galleryVertex,
@@ -198,15 +267,35 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  * Animate
  */
 const clock = new THREE.Clock()
+let lastElapsedTime = 0
 
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    const deltaTime = elapsedTime - lastElapsedTime
+    lastElapsedTime = elapsedTime
+
+    const parallaxX = pointer.x * 0.5
+    const parallaxY = - pointer.y * 0.5
+
+    if (hasLoaded) {
+        avatarHead.rotation.y += ((parallaxX / 1.5) - avatarHead.rotation.y) * 2 * deltaTime
+        avatarHead.rotation.x += (( parallaxY / 1.5 ) - avatarHead.rotation.x) * 2 * deltaTime
+
+        avatarSpine.rotation.y += ((parallaxX / 4) - avatarSpine.rotation.y) * 2 * deltaTime
+        avatarSpine.rotation.x += (( parallaxY / 4 ) - avatarSpine.rotation.x) * 2 * deltaTime
+
+        avatarLeftEye.rotation.y += ((parallaxX / 1.5) - avatarLeftEye.rotation.y) * 8 * deltaTime
+        avatarLeftEye.rotation.x += (( parallaxY / 1.5 ) - avatarLeftEye.rotation.x) * 8 * deltaTime
+
+        avatarRightEye.rotation.y += ((parallaxX / 1.5) - avatarRightEye.rotation.y) * 8 * deltaTime
+        avatarRightEye.rotation.x += (( parallaxY / 1.5) - avatarRightEye.rotation.x) * 8 * deltaTime
+    }
 
     shaderMat.uniforms.uTime.value = elapsedTime
     shaderMat.uniforms.uTime.value = elapsedTime
 
-    camera.position.y = - scrollY / sizes.height * objectsDistanceY
+    galleryGroup.position.y = scrollY / sizes.height * objectsDistanceY
     galleryGroup.rotation.y = - scrollY / sizes.height * 90 * THREE.Math.DEG2RAD
     canvas.style.opacity = scrollY / 1500
 
