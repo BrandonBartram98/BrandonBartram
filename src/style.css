@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Subjectivity';
+  src: local('Subjectivity'), url(fonts/subjectivity/Subjectivity-Regular.woff2) format('woff2');
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 *
@@ -13,9 +18,20 @@
 html,
 body
 {
-    font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
+h1, h2 {
+  font-family: 'Subjectivity';
+}
+
+.distorted-text {
+  text-shadow: 
+            0 0.03125em 0 #0c2ffb, 
+            0 0.0625em 0 #2cfcfd, 
+            0 -0.03125em 0 #fb203b, 
+            0 -0.0625em 0 #fefc4b;
+}
 
 .webgl
 {
@@ -23,31 +39,20 @@ body
     top: 0;
     left: 0;
     outline: none;
-    z-index: 0;
+    z-index: 10;
 }
 
-.nav-item::before {  
-    transform: scaleX(0);
-    transform-origin: bottom right;
-  }
-  
-  .nav-item:hover::before {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
+.ml10 {
+  position: relative;
+}
 
-  .nav-item::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    inset: 0 0 0 0;
-    background: #ffce1d;
-    z-index: -1;
-    transition: transform .3s ease;
-  }
-  
-  .nav-item {
-    position: relative;
-    cursor: pointer;
-  }
+.ml10 .text-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.ml10 .letter {
+  display: inline-block;
+  line-height: 1em;
+  transform-origin: 0 0;
+}

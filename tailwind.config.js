@@ -8,9 +8,12 @@ module.exports = {
         current: 'currentColor',
         'primary': '#ffce1d',
         'secondary': '#F7B1AB',
-        'white': '#FFFFFF',
-        'black': '#000000',
+        'dark': '#141414',
+        'light': '#fff6d6',
       },
+      fontFamily: {
+        'sans': ['Subjectivity']
+      }
     },
   },
   plugins: [],

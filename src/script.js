@@ -5,12 +5,19 @@ import * as dat from 'lil-gui'
 import galleryFragment from './shaders/galleryfragment.glsl'
 import galleryVertex from './shaders/galleryvertex.glsl'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import gsap from 'gsap'
 
-let avatarModel
-let avatarHead, avatarLeftEye, avatarRightEye, avatarSpine, avatarBreathing
+let currentSection = 0
 
 let hasLoaded = false
 const pointer = new THREE.Vector2();
+
+// Wrap every letter in a span
+var textWrapper = document.querySelector('.ml10 .letters');
+textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+pointer.x = 0
+pointer.y = 0
 
 let darkToggle = false
 
@@ -51,8 +58,6 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 const objectsDistanceY = 3
-const textureLoader = new THREE.TextureLoader()
-
 /**
  * Sizes
  */
@@ -86,16 +91,6 @@ camera.position.y = 0
 camera.position.z = 10
 scene.add(camera)
 
-document.addEventListener( 'mousemove', onMouseMove )
-
-// Cursor
-function onMouseMove(event)
-{
-    event.preventDefault()
-    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
-	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
-}
-
 const loadingElement = document.querySelector('.loading-screen')
 const loadingManager = new THREE.LoadingManager(
     // Loaded
@@ -106,38 +101,45 @@ const loadingManager = new THREE.LoadingManager(
         window.setTimeout(() =>
         {
             loadingElement.style.opacity = 0
-        }, 200)
+
+            anime.timeline({loop: false })
+            .add({
+                targets: '.ml10 .letter',
+                rotateY: [-90, 0],
+                duration: 1300,
+                delay: (el, i) => 80 * i
+            });
+
+        }, 800)
     }
 )
 
-// AVATAR
-const gltfLoader = new GLTFLoader(loadingManager)
-gltfLoader.load(
-    'models/avatar.glb', (glb) => 
-    {
-        avatarModel = glb
-        avatarModel.scene.position.set(0.9, -2, 9)
-        avatarModel.scene.traverse(function(child) {
-            if (child.name === "Head") {
-              avatarHead = child
-            }
-            if (child.name === "LeftEye") {
-                avatarLeftEye = child
-            }
-            if (child.name === "RightEye") {
-                avatarRightEye = child
-            }
-            if (child.name === "Spine2") {
-                avatarSpine = child
-            }
-            if (child.name === "Spine1") {
-                avatarSpine = child
-            }
-        })
-        avatarModel.scene.rotation.y = -40 * THREE.Math.DEG2RAD
-        //scene.add(avatarModel.scene)
-    }
-)
+const mouseGeometry = new THREE.SphereGeometry(0.01, 24, 24);
+const mouseMaterial = new THREE.MeshBasicMaterial({
+    color: 0x000000
+});
+const mouseMesh = new THREE.Mesh(mouseGeometry, mouseMaterial);
+//scene.add(mouseMesh);
+
+document.addEventListener( 'mousemove', onMouseMove )
+
+// Cursor
+function onMouseMove(event)
+{
+    event.preventDefault()
+    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
+	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+
+        // Make the sphere follow the mouse
+    var vector = new THREE.Vector3(pointer.x, pointer.y, 0.5);
+    vector.unproject( camera );
+    var dir = vector.sub( camera.position ).normalize();
+    var distance = - camera.position.z / dir.z;
+    var pos = camera.position.clone().add( dir.multiplyScalar( distance / 50 ) );
+    mouseMesh.position.copy(pos);
+}
+
+const textureLoader = new THREE.TextureLoader(loadingManager)
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
 scene.add(ambientLight)
@@ -171,22 +173,6 @@ const shaderMat = new THREE.ShaderMaterial({
  */
 let galleryGroup = new THREE.Group
 galleryGroup.position.set(0, 0, 0)
-
-// const plane1 = new THREE.Mesh(
-//     new THREE.PlaneGeometry(3, 4, 12, 12),
-//     shaderMat
-// )
-// galleryGroup.add(plane1)
-// plane1.position.set(0, objectsDistanceY * 0, 3)
-
-// planeTexture = textureLoader.load('/images/testimage2.jpeg')
-// const plane2 = new THREE.Mesh(
-//     new THREE.PlaneGeometry(3, 4, 12, 12),
-//     shaderMat
-// )
-// galleryGroup.add(plane2)
-// plane2.position.set(3, -(objectsDistanceY * 1), 0)
-// plane2.rotation.y = 90 * THREE.Math.DEG2RAD
 
 const plane3 = new THREE.Mesh(
     new THREE.PlaneGeometry(3, 4, 12, 12),
@@ -261,6 +247,21 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  window.addEventListener('scroll', () =>
 {
     scrollY = window.scrollY
+    const newSection = Math.round(scrollY / sizes.height)
+
+    switch(newSection) {
+        case 0:
+            canvas.style.opacity = 0
+            break;
+        case 1:
+            canvas.style.opacity = 100
+            break
+    }
+
+    if(newSection != currentSection)
+    {
+        currentSection = newSection
+    }
 })
 
 /**
@@ -278,26 +279,11 @@ const tick = () =>
     const parallaxX = pointer.x * 0.5
     const parallaxY = - pointer.y * 0.5
 
-    if (hasLoaded) {
-        avatarHead.rotation.y += ((parallaxX / 1.5) - avatarHead.rotation.y) * 2 * deltaTime
-        avatarHead.rotation.x += (( parallaxY / 1.5 ) - avatarHead.rotation.x) * 2 * deltaTime
-
-        avatarSpine.rotation.y += ((parallaxX / 4) - avatarSpine.rotation.y) * 2 * deltaTime
-        avatarSpine.rotation.x += (( parallaxY / 4 ) - avatarSpine.rotation.x) * 2 * deltaTime
-
-        avatarLeftEye.rotation.y += ((parallaxX / 1.5) - avatarLeftEye.rotation.y) * 8 * deltaTime
-        avatarLeftEye.rotation.x += (( parallaxY / 1.5 ) - avatarLeftEye.rotation.x) * 8 * deltaTime
-
-        avatarRightEye.rotation.y += ((parallaxX / 1.5) - avatarRightEye.rotation.y) * 8 * deltaTime
-        avatarRightEye.rotation.x += (( parallaxY / 1.5) - avatarRightEye.rotation.x) * 8 * deltaTime
-    }
-
     shaderMat.uniforms.uTime.value = elapsedTime
     shaderMat.uniforms.uTime.value = elapsedTime
 
     galleryGroup.position.y = scrollY / sizes.height * objectsDistanceY
     galleryGroup.rotation.y = - scrollY / sizes.height * 90 * THREE.Math.DEG2RAD
-    canvas.style.opacity = scrollY / 1500
 
     // Render
     renderer.render(scene, camera)
