@@ -8,6 +8,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import gsap from 'gsap'
 
 let currentSection = 0
+let newSection
 
 let hasLoaded = false
 const pointer = new THREE.Vector2();
@@ -247,14 +248,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  window.addEventListener('scroll', () =>
 {
     scrollY = window.scrollY
-    const newSection = Math.round(scrollY / sizes.height)
+    newSection = Math.round(scrollY / sizes.height)
+    console.log(newSection)
 
     switch(newSection) {
         case 0:
             canvas.style.opacity = 0
             break;
-        case 1:
+        case 1: case 2: case 3: case 4: case 5: case 6: case 7:
             canvas.style.opacity = 100
+            break
+        case 8:
+            canvas.style.opacity = 0
             break
     }
 
