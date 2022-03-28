@@ -10,6 +10,19 @@ import gsap from 'gsap'
 let currentSection = 0
 let newSection
 
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+
+function onMouseMove(event) {
+
+    // calculate mouse position in normalized device coordinates
+    // (-1 to +1) for both components
+  
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  
+  }
+
 let hasLoaded = false
 const pointer = new THREE.Vector2();
 
@@ -115,31 +128,6 @@ const loadingManager = new THREE.LoadingManager(
     }
 )
 
-const mouseGeometry = new THREE.SphereGeometry(0.01, 24, 24);
-const mouseMaterial = new THREE.MeshBasicMaterial({
-    color: 0x000000
-});
-const mouseMesh = new THREE.Mesh(mouseGeometry, mouseMaterial);
-//scene.add(mouseMesh);
-
-document.addEventListener( 'mousemove', onMouseMove )
-
-// Cursor
-function onMouseMove(event)
-{
-    event.preventDefault()
-    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
-	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
-
-        // Make the sphere follow the mouse
-    var vector = new THREE.Vector3(pointer.x, pointer.y, 0.5);
-    vector.unproject( camera );
-    var dir = vector.sub( camera.position ).normalize();
-    var distance = - camera.position.z / dir.z;
-    var pos = camera.position.clone().add( dir.multiplyScalar( distance / 50 ) );
-    mouseMesh.position.copy(pos);
-}
-
 const textureLoader = new THREE.TextureLoader(loadingManager)
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
@@ -153,20 +141,40 @@ scene.add(directionalLight)
 // GALLERY
 
 let planeTexture = textureLoader.load('images/testimage.jpeg')
+let hiveTexture = textureLoader.load('images/hive.png')
+let shaderTexture = textureLoader.load('images/shaderPlayground.png')
+let rosTexture = textureLoader.load('images/ros.png')
+let giddyTexture = textureLoader.load('images/giddy.png')
+
 // Material
-const shaderMat = new THREE.ShaderMaterial({
-    vertexShader: galleryVertex,
-    fragmentShader: galleryFragment,
+const shaderMat = new THREE.MeshStandardMaterial({
     transparent: true,
     side: DoubleSide,
-    uniforms:
-    {
-        uFrequency: { value: new THREE.Vector2(3, 0) },
-        uDistance: { value: 0.1 },
-        uTime: { value: 0 },
-        uColor: { value: new THREE.Color('orange') },
-        uTexture: { value: planeTexture }
-    }
+    map: planeTexture
+})
+
+const shaderMatHive = new THREE.MeshStandardMaterial({
+    transparent: true,
+    side: DoubleSide,
+    map: hiveTexture
+})
+
+const shaderMatPlayground = new THREE.MeshStandardMaterial({
+    transparent: true,
+    side: DoubleSide,
+    map: shaderTexture
+})
+
+const rosMat = new THREE.MeshStandardMaterial({
+    transparent: true,
+    side: DoubleSide,
+    map: rosTexture
+})
+
+const giddyMat = new THREE.MeshStandardMaterial({
+    transparent: true,
+    side: DoubleSide,
+    map: giddyTexture
 })
 
 /**
@@ -177,7 +185,7 @@ galleryGroup.position.set(0, 0, 0)
 
 const plane3 = new THREE.Mesh(
     new THREE.PlaneGeometry(3, 4, 12, 12),
-    shaderMat
+    shaderMatHive
 )
 galleryGroup.add(plane3)
 plane3.position.set(0, -(objectsDistanceY * 2), -3)
@@ -185,7 +193,7 @@ plane3.rotation.y = 180 * THREE.Math.DEG2RAD
 
 const plane4 = new THREE.Mesh(
     new THREE.PlaneGeometry(3, 4, 12, 12),
-    shaderMat
+    shaderMatPlayground
 )
 plane4,shaderMat.uTexture = { value: planeTexture }
 galleryGroup.add(plane4)
@@ -194,14 +202,14 @@ plane4.rotation.y = 270 * THREE.Math.DEG2RAD
 
 const plane5 = new THREE.Mesh(
     new THREE.PlaneGeometry(3, 4, 12, 12),
-    shaderMat
+    rosMat
 )
 galleryGroup.add(plane5)
 plane5.position.set(0, -(objectsDistanceY * 4), 3)
 
 const plane6 = new THREE.Mesh(
     new THREE.PlaneGeometry(3, 4, 12, 12),
-    shaderMat
+    giddyMat
 )
 galleryGroup.add(plane6)
 plane6.position.set(3, -(objectsDistanceY * 5), 0)
@@ -223,10 +231,6 @@ plane8.position.set(-3, -(objectsDistanceY * 7), 0)
 plane8.rotation.y = 270 * THREE.Math.DEG2RAD;
 
 scene.add(galleryGroup)
-
-gui.add(shaderMat.uniforms.uDistance, 'value').min(0).max(1).step(0.001).name('Cube Wave Dist')
-gui.add(shaderMat.uniforms.uFrequency.value, 'x').min(0).max(20).step(0.01).name('CubeX Freq')
-gui.add(shaderMat.uniforms.uFrequency.value, 'y').min(0).max(20).step(0.01).name('CubeY Freq')
 
 /**
  * Renderer
@@ -283,9 +287,6 @@ const tick = () =>
 
     const parallaxX = pointer.x * 0.5
     const parallaxY = - pointer.y * 0.5
-
-    shaderMat.uniforms.uTime.value = elapsedTime
-    shaderMat.uniforms.uTime.value = elapsedTime
 
     galleryGroup.position.y = scrollY / sizes.height * objectsDistanceY
     galleryGroup.rotation.y = - scrollY / sizes.height * 90 * THREE.Math.DEG2RAD
